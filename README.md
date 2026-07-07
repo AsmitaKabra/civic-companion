@@ -3,65 +3,54 @@
 CivicCompanion is an award-winning civic portal that makes government interactions simple, transparent, and accessible. It solves citizen pain points—such as digital exclusion, language barriers, complex bureaucratic terminology, and issue tracking—by pairing a beautiful modern dashboard with a proactive, voice-enabled, agentic AI Companion.
 
 ---
-
-## 🏗️ System Architecture
-
-The diagram below details the unified architecture from the frontend interface down to the backend services and LLM routing layer.
-
+## ✨ SysteM Architecture
 ```mermaid
 graph TD
-    %% Client Layer
-    subgraph Client [Vite + React SPA]
-        UI[Dashboard & Forms]
-        AC[AI Companion Panel]
-        LOC[Localization Dictionary]
-        VSC[Web Speech TTS/STT]
-        Agent[WebMCP Autofill Agent]
+
+    User["Citizen"]
+
+    subgraph Client["React + Vite Frontend"]
+        UI["Dashboard"]
+        AI["AI Companion"]
+        Speech["Voice Input / Output"]
+        Lang["Multilingual Support"]
+        AutoFill["Smart Form Autofill"]
     end
 
-    %% Network / Proxy
-    Proxy[Vite Dev Proxy / Docker Port 5001]
-
-    %% Server Layer
-    subgraph Server [Node.js + Express API]
-        R_Chat[/api/chat]
-        R_Comp[/api/complaints]
-        R_Schemes[/api/schemes]
-        Rate[Rate Limiter]
-        PII[PII Masking Filter]
-        XSS[Input Sanitizer]
-        DB[(JSON Database Service)]
+    subgraph Backend["Node.js + Express API"]
+        Auth["Authentication"]
+        Chat["/api/chat"]
+        Complaints["/api/complaints"]
+        Schemes["/api/schemes"]
+        Security["Rate Limiter + Input Sanitization + PII Masking"]
+        DB[("JSON Database")]
     end
 
-    %% AI / LLM Routing
-    subgraph AI [Generative AI Layer]
-        Gemini[Google Gemini API]
-        Sim[Simulation AI Fallback Engine]
+    subgraph GenAI["Generative AI"]
+        Gemini["Google Gemini API"]
+        Fallback["Simulation Engine"]
     end
 
-    %% Connections
-    UI --> Proxy
-    AC --> Proxy
-    Proxy --> Rate
-    Rate --> R_Chat
-    Rate --> R_Comp
-    Rate --> R_Schemes
-    
-    R_Chat --> PII
-    PII --> Gemini
-    PII --> Sim
-    
-    R_Comp --> XSS
-    XSS --> DB
-    
-    R_Schemes --> DB
-    
-    Agent -.-> UI
-    VSC -.-> AC
-    LOC -.-> UI
+    User --> UI
+    User --> AI
+
+    UI --> Auth
+    UI --> Complaints
+    UI --> Schemes
+
+    AI --> Chat
+
+    Chat --> Security
+    Security --> Gemini
+    Security --> Fallback
+
+    Complaints --> DB
+    Schemes --> DB
+
+    Speech -.-> AI
+    Lang -.-> UI
+    AutoFill -.-> UI
 ```
-
----
 
 ## ✨ Features (The Hackathon "Wow" List)
 
@@ -180,3 +169,6 @@ graph TD
    ```
 2. Open `http://localhost:5001`. (Vite assets will build and bundle directly inside the production Node container).
 # CivicCompanion
+## 🌐 Live Demo
+
+**Live Application:** https://civic-companion.vercel.app/
