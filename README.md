@@ -168,7 +168,7 @@ graph TD
    docker-compose up --build
    ```
 2. Open `http://localhost:5001`. (Vite assets will build and bundle directly inside the production Node container).
-# CivicCompanion
+
 ## 🌐 Live Demo
 
-**Live Application:** https://civic-companion.vercel.app/
+**Live Application:** https://civic-companion.onrender.com
