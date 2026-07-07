@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  civic-companion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+      - NODE_ENV=production
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - RATE_LIMIT_WINDOW_MS=900000
+      - RATE_LIMIT_MAX=100
+    volumes:
+      - civic-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  civic-data:
